@@ -35,13 +35,12 @@ export default function Attendance(){
 
   async function saveManual(){
     if(!empId) return alert('اختر موظفاً')
-    const payload:any = {
-      employee_id: empId,
-      date: form.date,
-      check_in: form.check_in ? dayjs(`${form.date} ${form.check_in}`).toISOString() : null,
-check_out: form.check_out ? dayjs(`${form.date} ${form.check_out}`).toISOString() : null,
-
-    }
+    const payload = {
+  employee_id: empId,
+  date: form.date,
+  check_in: form.check_in ? dayjs(`${form.date} ${form.check_in}`).toISOString() : null,
+  check_out: form.check_out ? dayjs(`${form.date} ${form.check_out}`).toISOString() : null,
+}
     const up = await supabase.from('timesheets').upsert(payload, { onConflict: 'employee_id,date' })
     if(up.error) return alert(up.error.message)
     setManualOpen(false)
